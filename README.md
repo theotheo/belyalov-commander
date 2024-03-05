@@ -6,20 +6,20 @@ Note preview and management [Obsidian](https://obsidian.md/) plugin
 
 - Explore directory by notes preview.
 
-![](docs/open_view.mkv)
+![](docs/open_view.mp4)
 
 - Open notes in a new side-pane.
 
-![](docs/open_file.mkv)
+![](docs/open_file.mp4)
 
 - Move notes by dragging and dropping them to the Obsidian file manager.
 
-![](docs/drag-n-drop.mkv)
+![](docs/drag-n-drop.mp4)
 
 
 - Switch between a list and grid layout.
 
-![](docs/grid_layout.mkv)
+![](docs/grid_layout.mp4)
 
 
 ## Installation
