@@ -1,6 +1,6 @@
 # Belyalov Commander
 
-This is a plugin for [Obsidian](https://obsidian.md/) that note preview and management.
+Note preview and management [Obsidian](https://obsidian.md/) plugin
 
 ## Features
 
