@@ -1,0 +1,153 @@
+.list-card {
+  background-color: var(--background-primary-alt);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-basis: 100%;
+  /* what is it */
+
+  max-width: 750px;
+  min-width: 280px;
+  min-height: 50px;
+  width: 100%;
+  /* padding: 16px 20px 10px; */
+  /* margin: 6px 0; */
+}
+
+.list-card .header {
+  align-items: baseline;
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+
+
+.list-card .title {
+  font: 700 16px Inter, sans-serif;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+}
+
+.list-card .created-date {
+  font: 500 12px Inter, sans-serif;
+  white-space: nowrap;
+
+}
+
+.list-card .image {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.list-card .content {
+  color: var(--text-muted);
+  font: 400 12px Inter, sans-serif;
+  margin-top: 6px;
+  margin-bottom: 0px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-wrap: wrap;
+  max-height: 100px;
+}
+
+.list-card .body {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  max-height: 170px;
+}
+
+.list-card .image {
+  align-self: stretch;
+  object-fit: cover;
+  position: relative;
+  width: 100px;
+}
+
+
+.list-card .footer {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  position: relative;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+
+.tasks {
+  display: flex;
+}
+
+.tasks div {
+  margin-left: 2px;
+}
+
+.tasks svg {
+  width: 16px;
+}
+
+/* @media (max-width: 2091px) {
+    .app {
+      padding: 0 20px;
+    }
+    .list-cards {
+      flex-direction: column;
+      gap: 0px;
+    }
+    .list-card {
+      flex-basis: 100%;
+      margin-top: 31px;
+    }
+  } */
+
+
+.grid.list-cards {
+  /* flex-direction: row;  */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--card-width));
+  column-gap: 10px;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.grid .list-card .body {
+  flex-direction: column;
+  flex: 0 0 auto;
+}
+
+.grid .list-card .image {
+  height: 115px;
+  width: 100%;
+  order: 1;
+}
+
+.grid .list-card .content {
+  order: 2;
+}
+
+.grid .list-card {
+  max-width: var(--card-width);
+  min-width: 280px;
+  min-height: 150px;
+  width: 100%;
+  /* padding: 16px 20px 10px; */
+  /* margin: 6px 0; */
+}

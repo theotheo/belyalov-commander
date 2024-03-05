@@ -1,0 +1,32 @@
+.tag {
+    align-items: center;
+    border: 1px solid;
+    border-color: var(--background-modifier-border);
+    border-radius: var(--pill-radius);
+    display: inline-flex;
+    overflow: hidden;
+    padding: 0px 4px;
+    position: relative;
+  }
+  
+  .tag {
+    color: var(--pill-color);
+    font-family: "Inter", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+    margin-top: -1px;
+    position: relative;
+    width: fit-content;
+  }
+
+  .list-card .tags {
+    align-items: flex-start;
+    display: flex;
+    flex: 1;
+    flex-grow: 1;
+    gap: 4px;
+    position: relative;
+  }
+  

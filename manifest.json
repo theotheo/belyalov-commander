@@ -1,0 +1,10 @@
+{
+  "id": "belyalov-commander",
+  "name": "Belyalov Commander",
+  "version": "0.1.0",
+  "minAppVersion": "0.15.0",
+  "description": "Note preview and management",
+  "author": "theotheo",
+  "authorUrl": "https://github.com/theotheo/",
+  "isDesktopOnly": false
+}

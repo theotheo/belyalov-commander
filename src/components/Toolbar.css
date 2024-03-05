@@ -1,0 +1,7 @@
+.toolbar {
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+    z-index: 1;
+    width: 95%
+}

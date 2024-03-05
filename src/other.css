@@ -1,0 +1,17 @@
+.selected {
+  color: var(--nav-item-color-selected);
+  background-color: var(--nav-item-background-selected);
+  border: 1px solid var(--interactive-accent-hover);
+}
+
+.list-card:hover {
+  background-color: var(--background-modifier-hover);
+}
+
+/* .list-card:hover .title {
+  color: var(--interactive-accent-hover);
+} */
+
+.switch.is-enabled span {
+  color: var(--text-accent);
+}

@@ -1,0 +1,11 @@
+.list-cards {
+  align-items: center;
+  background-color: var(--obsidian-background-primary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--obsidian-padding-base);
+  position: relative;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  --card-width: 350px;
+}
