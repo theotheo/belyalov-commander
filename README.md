@@ -58,7 +58,7 @@ https://github.com/theotheo/belyalov-commander/assets/1499744/46da5f28-17a3-40cb
 - [mnaovov](https://github.com/mnaoumov) for his help with the initial steps of programming for Obsidian and [plugin generator](https://github.com/mnaoumov/generator-obsidian-plugin)
 - [alx-folder-note](https://github.com/aidenlx/alx-folder-note ) for an example of File Explorer monkey-patching 
 - [obsidian-full-calendar](https://github.com/davish/obsidian-full-calendar ) for an example of how to write tests and mocks for Obsidian
-- [Life-Disciplines-Projects](https://github.com/uwidev/life-disciplines-projects /) for the vault that I use in the demos
+- [Life-Disciplines-Projects](https://github.com/uwidev/life-disciplines-projects) for the vault that I use in the demos
 
 ## License
 
