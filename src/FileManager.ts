@@ -59,7 +59,7 @@ export default class FileManager {
     });
     console.log(tFiles.length)
 
-    const names = tFiles.map((f) => f.path);
+    const names = (tFiles as TFile[]).filter((f) => f.extension === 'md').map((f) => f.path);
 
     return names;
   }
