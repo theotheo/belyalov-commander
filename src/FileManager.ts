@@ -28,6 +28,23 @@ interface TaskStat {
 
 type Tag = string;
 
+function getGroupItemsByPath(items: Array<any>, path: string): Array<any> {
+  const parts = path.split('/')
+
+  parts.forEach((part: string) => {
+    const item = items.find((item) => item['type'] === 'group' && item['title'] === part)
+
+    if (!item) {
+      console.error('not found', items, path)
+      items = []
+    } else {
+      items = item['items']
+    }
+  })
+
+  return items
+}
+
 export default class FileManager {
   app: App;
   viewType: string;
@@ -62,6 +79,16 @@ export default class FileManager {
     const names = (tFiles as TFile[]).filter((f) => f.extension === 'md').map((f) => f.path);
 
     return names;
+  }
+
+  getBookmarkFiles(path: string) {
+    const plugin = this.app.internalPlugins.plugins['bookmarks'] 
+    // @ts-ignore
+    const bookmarksTree = plugin.instance.items
+    const items = getGroupItemsByPath(bookmarksTree, path)
+    const files = items.filter((i) => i.type === 'file').map(i => i.path)
+    return files
+
   }
 
   getTFile(filename: string): TFile | null {

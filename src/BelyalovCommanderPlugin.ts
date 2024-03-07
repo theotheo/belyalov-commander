@@ -1,11 +1,12 @@
 import { WorkspaceLeaf, TFile, Plugin, TFolder } from "obsidian";
 import { around } from "monkey-around";
-import BelyalovCommanderView, { VIEW_TYPE } from "./BelyalovCommanderView.tsx";
+import BelyalovCommanderView, { VIEW_TYPE, State} from "./BelyalovCommanderView.tsx";
 import FileManager from "./FileManager.ts";
 
 export default class BelyalovCommanderPlugin extends Plugin  {
-  private removePatch!: Function;
+  private removePatch!: Function; // TODO: rename
   fileManager!: FileManager;
+  removeBMPatch!: Function; // TODO: rename
 
   public override onload(): void {
     this.app.workspace.onLayoutReady(() => {
@@ -65,9 +66,9 @@ export default class BelyalovCommanderPlugin extends Plugin  {
               } else if (file instanceof TFile) {
                 path = file.parent?.path
               }
-              console.log('menu', path)
+              console.debug('file-menu', path)
               
-              await this.openPlugin(path);
+              await this.openPlugin({'query': path ?? '', 'type': 'directory'});
             });
         });
       })
@@ -91,7 +92,7 @@ export default class BelyalovCommanderPlugin extends Plugin  {
         // @ts-ignore
         async function (this: FolderItem, event: MouseEvent) {
           if (event.ctrlKey || event.metaKey) {
-            await that.openPlugin(this.file.path);
+            await that.openPlugin({'query': this.file.path, 'type': 'directory'});
           }
           next.call(this, event);
         },
@@ -99,7 +100,7 @@ export default class BelyalovCommanderPlugin extends Plugin  {
         // @ts-ignore
         async function (this: FolderItem, event: MouseEvent) {
           if (event.ctrlKey || event.metaKey) {
-            await that.openPlugin(this.file.path);
+            await that.openPlugin({'query': this.file.path, 'type': 'directory'});
           } else {
             next.call(this, event);
           }
@@ -107,9 +108,28 @@ export default class BelyalovCommanderPlugin extends Plugin  {
     });
   }
 
-  async openPlugin(dirPath: string | undefined) {
+  public patchBookmarksGroup(bm: any): void {
+    const that = this;
+    this.removeBMPatch = around(bm.__proto__, {
+      onSelfClick: (next: Function) =>
+        // @ts-ignore
+        async function (this: any, event: MouseEvent) {
+          if (event.ctrlKey || event.metaKey) {
+            const query = this.el.dataset['path']
+            console.debug('bookmarks-click', query)
+            await that.openPlugin({'query': query, 'type': 'bookmarks'});
+          } else {
+            next.call(this, event);
+          }
+        },
+        
+    });
+    
+  }
+
+  async openPlugin(state: State) {
     const view = await this.getView();
-    await view.setState({ currentDirectory: dirPath });
+    await view.setState(state);
     this.app.workspace.revealLeaf(view.leaf);
   }
 
@@ -154,6 +174,7 @@ export default class BelyalovCommanderPlugin extends Plugin  {
   //   menu.showAtPosition({ x: event.clientX, y: event.clientY });
   // }
 
+  // TODO: refactor function
   private doPatch() {
     // const fe = this.app.workspace.getLeavesOfType("file-explorer")[0];
     const leaf = this.app.workspace.getLeaf(true);
@@ -164,6 +185,14 @@ export default class BelyalovCommanderPlugin extends Plugin  {
     const folderItem = fileExplorer.createFolderDom(root);
     // const folderItem = fe.view.createFolderDom(root);
     this.patchFolderNote(folderItem);
+
+    const viewInvoke = this.app.viewRegistry.viewByType["bookmarks"]
+    if (viewInvoke) {
+      // @ts-ignore
+      const view = viewInvoke(leaf) as FileExplorerView; // TODO: set appropriate view type
+      const groupItem = view.getItemDom({'type': 'group'})
+      this.patchBookmarksGroup(groupItem)
+    }
   }
 
   async openView(): Promise<void> {

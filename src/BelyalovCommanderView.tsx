@@ -7,10 +7,15 @@ import FileManager, { FileData } from "./FileManager.ts";
 
 export const VIEW_TYPE = "file-management";
 
+export type State = {
+  type: 'directory' | 'bookmarks',
+  query: string
+}
+
 export default class FileManagementView extends ItemView {
   root: Root | null = null;
   private readonly fileManager;
-  private currentDirectory: string = "";
+  private state: State = {'query': '', 'type': 'directory'};
   focusFile: (tfile: TFile, event: MouseEvent) => void;
 
   constructor(
@@ -25,7 +30,11 @@ export default class FileManagementView extends ItemView {
   }
 
   override getIcon(): string {
-    return "folder-open-dot";
+    if (this.state.type === 'directory') {
+      return "folder-open-dot";
+    } else {
+      return "bookmark";
+    }
   }
 
   override getViewType(): string {
@@ -33,35 +42,46 @@ export default class FileManagementView extends ItemView {
   }
 
   override getDisplayText(): string {
-    return `/${this.currentDirectory}`;
+    switch(this.state.type) {
+      case 'directory':
+        return `/${this.state.query}`;
+      case 'bookmarks':
+        return `${this.state.query}`;
+    }
   }
 
   override async setState(
     state: any,
     result: ViewStateResult = { history: true }
   ): Promise<void> {
-    this.currentDirectory = state["currentDirectory"] ?? '';
-    this.currentDirectory = this.fileManager.normalizePath(
-      this.currentDirectory
-    );
-    console.log('setState', this.currentDirectory)
-    const files = this.fileManager.listFiles(this.currentDirectory);
-    const filesWithContent = await this.fileManager.getFilesWithContent(files);
+    console.debug('setState', state)
 
-    console.log(filesWithContent.length)
+    let filepaths;
+
+    if (state['type'] === 'directory') {
+      state.query = this.fileManager.normalizePath(
+        state.query
+      );
+      filepaths = this.fileManager.listFiles(state.query);
+    } else {
+      filepaths = this.fileManager.getBookmarkFiles(state.query)
+    }
+    console.debug(`get ${filepaths.length} files`)
+
+    const filesWithContent = await this.fileManager.getFilesWithContent(filepaths);
     this.render(filesWithContent);
-      console.log(files.length)
+
+    this.state = state
+    await super.setState(state, result);
 
     // @ts-ignore
     this.leaf.updateHeader();
     this.titleEl.setText(this.getDisplayText());
-
-    await super.setState(state, result);
   }
 
   override getState() {
-    const state = super.getState();
-    state.currentDirectory = this.currentDirectory;
+    // TODO: is it necessary?
+    const state = {...super.getState(), ...this.state}
 
     return state;
   }
@@ -103,11 +123,11 @@ export default class FileManagementView extends ItemView {
 
   async updateViewIfNeeded(files: TFile[]): Promise<boolean> {
     const match = files.find((file) => {
-      return this.fileManager.getDirectory(file) === this.currentDirectory ? true : false;
+      return this.fileManager.getDirectory(file) === this.state.query ? true : false;
     })
 
     if (match) {
-      await this.setState({ currentDirectory: this.currentDirectory });
+      await this.setState({ 'query': this.state.query, 'type': 'directory' });
       return true
     }
 
@@ -117,6 +137,6 @@ export default class FileManagementView extends ItemView {
   override async onOpen() {
     const container = this.contentEl;
     this.root = createRoot(container);
-    await this.setState({ currentDirectory: "" });
+    await this.setState({'query': '', 'type': 'directory'});
   }
 }
