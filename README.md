@@ -20,6 +20,11 @@ Note preview and management [Obsidian](https://obsidian.md/) plugin
 
 https://github.com/theotheo/belyalov-commander/assets/1499744/749c0fb5-1266-46d5-8a53-6c9fe10daf4c
 
+### Explore bookmarks groups like a directories
+
+
+https://github.com/theotheo/belyalov-commander/assets/1499744/3a10ae25-7df6-4cb9-b802-75c969b684e7
+
 
 ### Open notes in a new side-pane
 
