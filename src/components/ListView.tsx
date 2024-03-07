@@ -30,6 +30,7 @@ export function ListView({
 
   const [targets, setTargets] = useState<Set<string>>(new Set());
   const [isGrid, setGrid] = useState<boolean>(false);
+  const [sort, setSort] = useState<string>('name-desc');
 
   const onClick = (event: MouseEvent, file: FileData): void => {
     if (event.shiftKey) {
@@ -65,9 +66,58 @@ export function ListView({
 
   }, [filesWithContent]);
 
+  // TODO: need refactor
+  useEffect(() => {
+    switch(sort) {
+      case 'name-desc': 
+        filesWithContent = filesWithContent.sort((a, b) => {
+          if (a.name > b.name) return 1
+          if (a.name < b.name) return -1;
+          return 0; 
+        })
+        break;
+      case 'name-asc': 
+        filesWithContent = filesWithContent.sort((a, b) => {
+          if (a.name < b.name) return 1
+          if (a.name > b.name) return -1;
+          return 0; 
+        })
+        break;
+      case 'created-desc': 
+        filesWithContent = filesWithContent.sort((a, b) => {
+          if (a.createdDate > b.createdDate) return 1
+          if (a.createdDate < b.createdDate) return -1;
+          return 0; 
+        })
+      break;
+      case 'created-asc': 
+        filesWithContent = filesWithContent.sort((a, b) => {
+          if (a.createdDate < b.createdDate) return 1
+          if (a.createdDate > b.createdDate) return -1;
+          return 0; 
+        })
+      break;
+      case 'updated-desc': 
+      filesWithContent = filesWithContent.sort((a, b) => {
+        if (a.updatedDate > b.updatedDate) return 1
+        if (a.updatedDate < b.updatedDate) return -1;
+        return 0; 
+      })
+      break;
+      case 'updated-asc': 
+        filesWithContent = filesWithContent.sort((a, b) => {
+          if (a.updatedDate < b.updatedDate) return 1
+          if (a.updatedDate > b.updatedDate) return -1;
+          return 0; 
+        })
+    break;
+    }
+
+  }, [sort, filesWithContent])
+
   return (
     <>
-      <Toolbar setGrid={setGrid} isGrid={isGrid} />
+      <Toolbar setGrid={setGrid} isGrid={isGrid} sort={sort} setSort={setSort} />
       <div
         className={`list-cards ${isGrid ? "grid" : ""}`}
         onClick={() => setTargets(new Set())}
