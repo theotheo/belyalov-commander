@@ -2,20 +2,33 @@ import { WorkspaceLeaf, TFile, Plugin, TFolder } from "obsidian";
 import { around } from "monkey-around";
 import BelyalovCommanderView, { VIEW_TYPE, State} from "./BelyalovCommanderView.tsx";
 import FileManager from "./FileManager.ts";
+import { BelyalovCommanderSettingTab } from "./Settings.ts";
+
+interface BelyalovCommanderSetting {
+  unfinishedChars: string;
+}
+
+const DEFAULT_SETTINGS: Partial<BelyalovCommanderSetting> = {
+  unfinishedChars: " /",
+};
 
 export default class BelyalovCommanderPlugin extends Plugin  {
+  settings!: BelyalovCommanderSetting;
   private removePatch!: Function; // TODO: rename
   fileManager!: FileManager;
   removeBMPatch!: Function; // TODO: rename
 
-  public override onload(): void {
+  public override async onload(): Promise<void> {
     this.app.workspace.onLayoutReady(() => {
       this.onLayoutReady.bind(this);
       this.doPatch(); // TODO: how to test it?
       this.registerEvents();
     });
 
-    this.fileManager = new FileManager(this.app, VIEW_TYPE);
+    await this.loadSettings();
+    this.addSettingTab(new BelyalovCommanderSettingTab(this.app, this));
+
+    this.fileManager = new FileManager(this.app, VIEW_TYPE, this.settings.unfinishedChars);
 
     this.registerView(
       VIEW_TYPE,
@@ -216,6 +229,14 @@ export default class BelyalovCommanderPlugin extends Plugin  {
     const leaf = this.app.workspace.getLeaf();
     await leaf.setViewState({ type: VIEW_TYPE });
     return leaf.view as BelyalovCommanderView;
+  }
+
+  async loadSettings() {
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+  }
+
+  async saveSettings() {
+    await this.saveData(this.settings);
   }
 
 }

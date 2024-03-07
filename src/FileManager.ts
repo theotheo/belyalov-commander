@@ -51,14 +51,16 @@ export default class FileManager {
   vault: Vault;
   metadataCache: MetadataCache;
   dragManager: any;
+  unfinishedChars: string;
 
-  constructor(app: App, viewType: string) {
+  constructor(app: App, viewType: string, unfinishedChars: string) {
     this.app = app;
     this.viewType = viewType;
     // TODO: need refactor
     this.vault = app.vault;
     this.dragManager = (this.app as any).dragManager;
     this.metadataCache = app.metadataCache;
+    this.unfinishedChars = unfinishedChars;
   }
 
   //   async listFiles(path: string) {
@@ -156,27 +158,26 @@ export default class FileManager {
   }
 
   getTasksStat(
-    metadata: CachedMetadata,
-    closedChars = ["x", "-"]
+    metadata: CachedMetadata
   ): TaskStat | null {
     if (!metadata.listItems) return null;
 
     let total = 0;
-    let closed = 0;
+    let unfinished = 0;
 
     metadata.listItems.forEach((item) => {
       if (item.task) {
         total += 1;
 
-        if (closedChars.includes(item.task)) {
-          closed += 1;
+        if (this.unfinishedChars.includes(item.task)) {
+          unfinished += 1;
         }
       }
     });
 
     if (total === 0) return null;
 
-    return { total, closed };
+    return { total, closed: total - unfinished };
   }
 
   async getFileWithContent(filepath: string): Promise<FileData> {
