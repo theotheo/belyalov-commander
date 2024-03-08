@@ -33,7 +33,7 @@ export function ListView({
 
   const [targets, setTargets] = useState<Set<string>>(new Set());
   const [isGrid, setGrid] = useState<boolean>(false);
-  const [sort, setSort] = useState<string>('name-asc');
+  const [sort, setSort] = useState<string>('updated-asc');
 
   const onClick = (event: MouseEvent, file: FileData): void => {
     if (event.shiftKey) {
