@@ -1,7 +1,7 @@
 
 import * as React from "react";
 import { FileCard as FileCard } from "./FileCard.tsx";
-import { useState, useEffect, SyntheticEvent } from "react";
+import { useState, useEffect, SyntheticEvent, useMemo } from "react";
 import "./ListView.css";
 
 import { FileData } from "src/FileManager.ts";
@@ -30,7 +30,7 @@ export function ListView({
 
   const [targets, setTargets] = useState<Set<string>>(new Set());
   const [isGrid, setGrid] = useState<boolean>(false);
-  const [sort, setSort] = useState<string>('name-desc');
+  const [sort, setSort] = useState<string>('name-asc');
 
   const onClick = (event: MouseEvent, file: FileData): void => {
     if (event.shiftKey) {
@@ -67,53 +67,45 @@ export function ListView({
   }, [filesWithContent]);
 
   // TODO: need refactor
-  useEffect(() => {
+  useMemo(() => {    
     switch(sort) {
       case 'name-desc': 
         filesWithContent = filesWithContent.sort((a, b) => {
-          if (a.name > b.name) return 1
-          if (a.name < b.name) return -1;
+          if (a.name > b.name) return -1
+          if (a.name < b.name) return 1;
           return 0; 
         })
         break;
       case 'name-asc': 
         filesWithContent = filesWithContent.sort((a, b) => {
-          if (a.name < b.name) return 1
-          if (a.name > b.name) return -1;
+          if (a.name < b.name) return -1
+          if (a.name > b.name) return 1;
           return 0; 
         })
         break;
       case 'created-desc': 
         filesWithContent = filesWithContent.sort((a, b) => {
-          if (a.createdDate > b.createdDate) return 1
-          if (a.createdDate < b.createdDate) return -1;
-          return 0; 
+          return a.createdDate.diff(b.createdDate)
         })
-      break;
+        break;
       case 'created-asc': 
         filesWithContent = filesWithContent.sort((a, b) => {
-          if (a.createdDate < b.createdDate) return 1
-          if (a.createdDate > b.createdDate) return -1;
-          return 0; 
+          return b.createdDate.diff(a.createdDate)
         })
-      break;
+        break;
       case 'updated-desc': 
-      filesWithContent = filesWithContent.sort((a, b) => {
-        if (a.updatedDate > b.updatedDate) return 1
-        if (a.updatedDate < b.updatedDate) return -1;
-        return 0; 
-      })
-      break;
-      case 'updated-asc': 
         filesWithContent = filesWithContent.sort((a, b) => {
-          if (a.updatedDate < b.updatedDate) return 1
-          if (a.updatedDate > b.updatedDate) return -1;
-          return 0; 
+          return a.updatedDate.diff(b.updatedDate) 
         })
-    break;
+        break;
+      case 'updated-asc': 
+        filesWithContent = filesWithContent.sort((a, b) => { 
+          return b.updatedDate.diff(a.updatedDate)
+        })
+        break;
     }
 
-  }, [sort, filesWithContent])
+  }, [sort])
 
   return (
     <>

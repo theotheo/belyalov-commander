@@ -4,12 +4,12 @@ import "./Toolbar.css";
 import { Menu } from "obsidian";
 
 const sortMap = new Map<string, string>([
-  ["name-desc", "File name (A to Z)"],
-  ["name-asc", "File name (Z to A)"],
-  ["updated-desc", "Modified time (new to old)"],
-  ["updated-asc", "Modified time (old to new)"],
-  ["created-desc", "Created time (new to old)"],
-  ["created-asc", "Created time (old to new)"],
+  ["name-asc", "File name (A to Z)"],
+  ["name-desc", "File name (Z to A)"],
+  ["updated-asc", "Modified time (new to old)"],
+  ["updated-desc", "Modified time (old to new)"],
+  ["created-asc", "Created time (new to old)"],
+  ["created-desc", "Created time (old to new)"],
 ]);
 
 const createMenu = (sort: string, setSort: Function) => {
