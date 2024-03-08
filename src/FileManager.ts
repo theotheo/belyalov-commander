@@ -83,6 +83,19 @@ export default class FileManager {
     return names;
   }
 
+  latestFiles(maxFiles: string) {
+    const allFiles = this.vault.getAllLoadedFiles() as Array<TFile | TFolder>;
+
+    const tFiles = allFiles.filter((tFile) => {
+      if (tFile instanceof TFolder) return false;
+      else if (tFile.extension !== 'md') return false
+      else return true
+    }) as TFile[];
+    const names = tFiles.sort((a, b) => b.stat.mtime - a.stat.mtime).slice(0, Number(maxFiles)).map((f) => f.path);
+
+    return names;
+  }
+
   getBookmarkFiles(path: string) {
     const plugin = this.app.internalPlugins.plugins['bookmarks'] 
     // @ts-ignore
@@ -187,7 +200,7 @@ export default class FileManager {
     const content = this.removeFrontmatter(text);
 
     const createdDate = moment(tfile.stat.ctime);
-    const updatedDate = moment(tfile.stat.ctime);
+    const updatedDate = moment(tfile.stat.mtime);
     // const fileSize = tfile.stat.size
 
     const metadata = this.metadataCache.getFileCache(tfile);

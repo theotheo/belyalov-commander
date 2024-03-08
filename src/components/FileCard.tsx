@@ -2,6 +2,7 @@ import "./FileCard.css";
 import "../other.css";
 
 import React, { MouseEventHandler } from "react";
+import Markdown from 'markdown-to-jsx'
 import { Icon } from "./Icon.tsx";
 import { Tag } from "./Tag.tsx";
 import { FileData } from '../FileManager.ts'
@@ -50,13 +51,16 @@ export const FileCard = (props: Props) => {
       {selected}
       <div className="header">
         <div className="title">{file.name}</div>
-        <div className="created-date">{file.createdDate.fromNow()}</div>
+        <div className="created-date">{file.updatedDate.fromNow()}</div>
       </div>
       <div className="body">
-        <pre
+        {/* <pre
           className="content"
           dangerouslySetInnerHTML={{ __html: file.content.trim().substring(0, 300) }}
-        ></pre>
+        ></pre> */}
+        <div className="content">
+          <Markdown>{ file.content.trim().substring(0, 300) }</Markdown>
+        </div>
         {file.imgSrc && <img className="image" alt="Image" src={file.imgSrc} />}
       </div>
       <div className="footer">
