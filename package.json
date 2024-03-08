@@ -1,6 +1,6 @@
 {
   "name": "belyalov-commander",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Note preview and management",
   "scripts": {
     "build": "tsc --build && tsx esbuild.config.ts production",
