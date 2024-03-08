@@ -83,7 +83,7 @@ export default class FileManager {
     return names;
   }
 
-  latestFiles(maxFiles: string) {
+  recentFiles(maxFiles: string) {
     const allFiles = this.vault.getAllLoadedFiles() as Array<TFile | TFolder>;
 
     const tFiles = allFiles.filter((tFile) => {

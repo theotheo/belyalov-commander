@@ -6,10 +6,12 @@ import { BelyalovCommanderSettingTab } from "./Settings.ts";
 
 interface BelyalovCommanderSetting {
   unfinishedChars: string;
+  maxRecentFiles: number;
 }
 
 const DEFAULT_SETTINGS: Partial<BelyalovCommanderSetting> = {
   unfinishedChars: " /",
+  maxRecentFiles: 50
 };
 
 export default class BelyalovCommanderPlugin extends Plugin  {
@@ -90,10 +92,18 @@ export default class BelyalovCommanderPlugin extends Plugin  {
 
   private registerCommands() {
     this.addCommand({
-      id: "open",
-      name: "Open Belyalov Commander",
+      id: "root",
+      name: "Show vault root",
       callback: async () => {
-        await this.openView();
+        await this.openPlugin({'query': '', 'type': 'directory'});
+      },
+    });
+
+    this.addCommand({
+      id: "recent",
+      name: "Show recent notes",
+      callback: async () => {
+        await this.openPlugin({'query': String(this.settings.maxRecentFiles), 'type': 'recent'});
       },
     });
   }

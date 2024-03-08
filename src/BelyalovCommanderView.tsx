@@ -8,7 +8,7 @@ import FileManager, { FileData } from "./FileManager.ts";
 export const VIEW_TYPE = "file-management";
 
 export type State = {
-  type: 'directory' | 'bookmarks',
+  type: 'directory' | 'bookmarks' | 'recent',
   query: string
 }
 
@@ -32,8 +32,10 @@ export default class FileManagementView extends ItemView {
   override getIcon(): string {
     if (this.state.type === 'directory') {
       return "folder-open-dot";
-    } else {
+    } else if (this.state.type === 'bookmarks') {
       return "bookmark";
+    } else {
+      return "zap";
     }
   }
 
@@ -47,6 +49,8 @@ export default class FileManagementView extends ItemView {
         return `/${this.state.query}`;
       case 'bookmarks':
         return `${this.state.query}`;
+      case 'recent': 
+        return `recent`
     }
   }
 
@@ -63,8 +67,10 @@ export default class FileManagementView extends ItemView {
         state.query
       );
       filepaths = this.fileManager.listFiles(state.query);
-    } else {
+    } else if (state['type'] === 'directory') {
       filepaths = this.fileManager.getBookmarkFiles(state.query)
+    } else {
+      filepaths = this.fileManager.recentFiles(state.query)
     }
     console.debug(`get ${filepaths.length} files`)
 
@@ -127,7 +133,7 @@ export default class FileManagementView extends ItemView {
     })
 
     if (match) {
-      await this.setState({ 'query': this.state.query, 'type': 'directory' });
+      await this.setState({'query': this.state.query, 'type': 'directory' });
       return true
     }
 

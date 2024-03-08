@@ -28,5 +28,20 @@ export class BelyalovCommanderSettingTab extends PluginSettingTab {
             await this.plugin.saveSettings();
           })
       );
+
+    
+      new Setting(containerEl)
+      .setName("Max latest notes")
+      .setDesc("a maximum items for the view with latest modified notes")
+      .addSlider((slider) =>
+        slider
+          .setLimits(10, 200, 10)
+          .setDynamicTooltip()
+          .setValue(this.plugin.settings.maxLatestFiles)
+          .onChange(async (value) => {
+            this.plugin.settings.maxLatestFiles = value;
+            await this.plugin.saveSettings();
+          })
+      );
   }
 }
