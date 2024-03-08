@@ -17,16 +17,19 @@ export default class FileManagementView extends ItemView {
   private readonly fileManager;
   private state: State = {'query': '', 'type': 'directory'};
   focusFile: (tfile: TFile, event: MouseEvent) => void;
+  renderMarkdown: boolean;
 
   constructor(
     leaf: WorkspaceLeaf,
     fileManager: FileManager,
-    focusFile: (tfile: TFile, event: MouseEvent) => void
+    focusFile: (tfile: TFile, event: MouseEvent) => void,
+    renderMarkdown: boolean
   ) {
     super(leaf);
 
     this.fileManager = fileManager;
     this.focusFile = focusFile;
+    this.renderMarkdown = renderMarkdown;
   }
 
   override getIcon(): string {
@@ -114,6 +117,7 @@ export default class FileManagementView extends ItemView {
           handleDragFile={this.handleDrag}
           openFile={this.focusFile}
           handleDragFiles={this.handleDragFiles}
+          renderMarkdown={this.renderMarkdown}
         />
       );
     }

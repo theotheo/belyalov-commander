@@ -2,7 +2,6 @@ import "./FileCard.css";
 import "../other.css";
 
 import React, { MouseEventHandler } from "react";
-import Markdown from 'markdown-to-jsx'
 import { Icon } from "./Icon.tsx";
 import { Tag } from "./Tag.tsx";
 import { FileData } from '../FileManager.ts'
@@ -13,6 +12,7 @@ type Props = {
   handleClick: MouseEventHandler;
   selected: boolean;
   className: string;
+  preview: Function;
 };
 
 // const ToC = ({ headings }) => {
@@ -39,7 +39,7 @@ type Props = {
 // };
 
 export const FileCard = (props: Props) => {
-  const { handleClick, handleDrag, file, selected, className } = props;
+  const { handleClick, handleDrag, file, selected, className, preview } = props;
 
   return (
     <div
@@ -54,13 +54,7 @@ export const FileCard = (props: Props) => {
         <div className="created-date">{file.updatedDate.fromNow()}</div>
       </div>
       <div className="body">
-        {/* <pre
-          className="content"
-          dangerouslySetInnerHTML={{ __html: file.content.trim().substring(0, 300) }}
-        ></pre> */}
-        <div className="content">
-          <Markdown>{ file.content.trim().substring(0, 300) }</Markdown>
-        </div>
+        {preview(file)}
         {file.imgSrc && <img className="image" alt="Image" src={file.imgSrc} />}
       </div>
       <div className="footer">

@@ -1,5 +1,6 @@
 
 import * as React from "react";
+import Markdown from 'markdown-to-jsx'
 import { FileCard as FileCard } from "./FileCard.tsx";
 import { useState, useEffect, SyntheticEvent, useMemo } from "react";
 import "./ListView.css";
@@ -14,6 +15,7 @@ type Props = {
   // onDragOver: Function;
   handleDragFiles: Function;
   openFile: Function;
+  renderMarkdown: boolean;
 };
 
 export function ListView({
@@ -23,6 +25,7 @@ export function ListView({
   handleDragFile,
   handleDragFiles,
   openFile,
+  renderMarkdown,
 }: Props) {
   if (filesWithContent.length === 0) {
     return <h1>No files here</h1>;
@@ -122,6 +125,26 @@ export function ListView({
               file={file}
               handleDrag={(event: SyntheticEvent) => onDrag(event, file)}
               handleClick={(event: any): void => onClick(event, file)}
+            preview={(file: FileData) => {
+              const content = file.content.trim().substring(0, 300)
+
+              if (renderMarkdown) {
+                return (
+                  <div className="content">
+                    <Markdown>{content}</Markdown>
+                  </div>
+                );
+              } else {
+                return (
+                  <pre
+                    className="content"
+                    dangerouslySetInnerHTML={{
+                      __html: content,
+                    }}
+                  ></pre>
+                );
+              }
+            }}
           />
         ))}
       </div>

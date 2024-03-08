@@ -5,13 +5,15 @@ import FileManager from "./FileManager.ts";
 import { BelyalovCommanderSettingTab } from "./Settings.ts";
 
 interface BelyalovCommanderSetting {
+  renderMarkdown: boolean;
   unfinishedChars: string;
   maxRecentFiles: number;
 }
 
 const DEFAULT_SETTINGS: Partial<BelyalovCommanderSetting> = {
   unfinishedChars: " /",
-  maxRecentFiles: 50
+  maxRecentFiles: 50,
+  renderMarkdown: false
 };
 
 export default class BelyalovCommanderPlugin extends Plugin  {
@@ -34,7 +36,7 @@ export default class BelyalovCommanderPlugin extends Plugin  {
 
     this.registerView(
       VIEW_TYPE,
-      (leaf: WorkspaceLeaf) => new BelyalovCommanderView(leaf, this.fileManager, this.openFile)
+      (leaf: WorkspaceLeaf) => new BelyalovCommanderView(leaf, this.fileManager, this.openFile, this.settings.renderMarkdown)
     );
 
     this.registerCommands();
