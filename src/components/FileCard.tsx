@@ -1,10 +1,10 @@
-import "./ListCard.css";
+import "./FileCard.css";
 import "../other.css";
 
 import React, { MouseEventHandler } from "react";
 import { Icon } from "./Icon.tsx";
 import { Tag } from "./Tag.tsx";
-import { FileData } from '../FileManager.tsx'
+import { FileData } from '../FileManager.ts'
 
 type Props = {
   file: FileData;
@@ -37,7 +37,7 @@ type Props = {
 //   );
 // };
 
-export const ListCard = (props: Props) => {
+export const FileCard = (props: Props) => {
   const { handleClick, handleDrag, file, selected, className } = props;
 
   return (

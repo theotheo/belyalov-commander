@@ -1,6 +1,6 @@
 
 import * as React from "react";
-import { ListCard } from "./ListCard.tsx";
+import { FileCard as FileCard } from "./FileCard.tsx";
 import { useState, useEffect, SyntheticEvent } from "react";
 import "./ListView.css";
 
@@ -123,7 +123,7 @@ export function ListView({
         onClick={() => setTargets(new Set())}
       >
         {filesWithContent.map((file, idx) => (
-          <ListCard
+          <FileCard
               key={idx}
               className={"list-card-instance"}
               selected={targets.has(file.filepath) ? true : false}
