@@ -70,7 +70,7 @@ export default class FileManagementView extends ItemView {
         state.query
       );
       filepaths = this.fileManager.listFiles(state.query);
-    } else if (state['type'] === 'directory') {
+    } else if (state['type'] === 'bookmarks') {
       filepaths = this.fileManager.getBookmarkFiles(state.query)
     } else {
       filepaths = this.fileManager.recentFiles(state.query)
